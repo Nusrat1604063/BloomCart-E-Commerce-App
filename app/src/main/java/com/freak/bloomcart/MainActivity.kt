@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             //Nav Host
           NavHost(navController = navController, //nav Host is the core component that manages navigation  between screens
-              startDestination = "Home"
+              startDestination = Screens.Home.route
               ) {
                 //define routues using composable() {}
               //for each screen you want to support
