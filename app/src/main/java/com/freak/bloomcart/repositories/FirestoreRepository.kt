@@ -21,7 +21,6 @@ class FirestoreRepository @Inject constructor(
     fun getCategoriesFlow() : Flow<List<Category>> =
         callbackFlow {
 
-            callbackFlow {
 
                 val listenerRegistration = firestore
                     .collection("categories")
@@ -42,7 +41,7 @@ class FirestoreRepository @Inject constructor(
                 awaitClose {
                     listenerRegistration.remove()
                 }
-            }
+
     }
 
     suspend fun getProductsByCategory(categoryId: String) : List<Product> {
@@ -56,6 +55,34 @@ class FirestoreRepository @Inject constructor(
                 Log.v("TAG", "Mapped products: $it")
             }
         }catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getProductsById(productId: String) : Product? {
+            return try {
+                val result = firestore.collection("products")
+                    .document(productId)
+                    .get()
+                    .await()
+
+               result.toObject(Product::class.java)
+
+            }catch (e: Exception) {
+                null
+            }
+    }
+
+    suspend fun getAllProductsInStore(): List<Product> {
+        return try {
+            val allProducts = firestore.collection("products")
+                .get()
+                .await()
+                .documents
+                .mapNotNull { it.toObject(Product::class.java) }
+
+            allProducts
+        } catch (e: Exception) {
             emptyList()
         }
     }
