@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "162953005316",
+    "project_id": "bloomcart-cf479",
+    "storage_bucket": "bloomcart-cf479.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162953005316:android:b27093560c11551d5e6851",
+        "android_client_info": {
+          "package_name": "com.freak.bloomcart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv4Ye1tDOmhvIF5k31HWRRh41WmSF57pQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
