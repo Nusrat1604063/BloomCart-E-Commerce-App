@@ -1,8 +1,5 @@
-package com.freak.bloomcart.screens
+package com.freak.bloomcart.screens.home
 
-import android.R
-import android.graphics.drawable.Icon
-import android.icu.text.StringSearch
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -30,7 +27,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.freak.bloomcart.Greeting
 import com.freak.bloomcart.ui.theme.BloomCartTheme
 
 @Composable

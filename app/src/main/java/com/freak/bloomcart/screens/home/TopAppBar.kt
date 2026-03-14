@@ -1,4 +1,4 @@
-package com.freak.bloomcart.screens
+package com.freak.bloomcart.screens.home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle

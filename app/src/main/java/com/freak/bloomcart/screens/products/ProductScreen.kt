@@ -13,22 +13,34 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.freak.bloomcart.model.Product
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.freak.bloomcart.screens.navigation.Screens
+import com.freak.bloomcart.viewmodels.ProductViewModel
 
 @Composable
 fun ProductScreen(
     categoryId: String,
-    navController: NavController
+    navController: NavController,
+    productViewModel: ProductViewModel = hiltViewModel()
 ) {
     //fetch product from the viewmodel
+    LaunchedEffect(categoryId) {
+        productViewModel.fetchProducts(categoryId)
+    }
 
    //Collect products from viewmodel
-    val products = listOf(
+
+    val productState = productViewModel.products.collectAsState()
+    val products = productState.value
+
+   /* val products = listOf(
         Product("1","Smartphone", 999.99, "https://m-cdn.phonearena.com/images/hub/404-wide-two_1200/Apple-iPhone-15-release-date-price-and-features.jpg",
             "Electronics"),
         Product(id = "2", "Gadgets", 350.50, "https://photos5.appleinsider.com/gallery/product_pages/131-hero.jpg"),
         Product(id = "3", "Tv", 350.50, "https://photos5.appleinsider.com/gallery/product_pages/131-hero.jpg")
-    )
+    )*/
 
     //display the products
 

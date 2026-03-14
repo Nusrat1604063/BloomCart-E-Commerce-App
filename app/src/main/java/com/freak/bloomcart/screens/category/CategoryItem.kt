@@ -70,7 +70,7 @@ fun CategoryItem(category: Category, onClick: ()-> Unit) {
                     Image(
                         painter = rememberAsyncImagePainter(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(category.iconURL)
+                                .data(category.iconUrl)
                                 .crossfade(true)
                                 .build()
                         ),

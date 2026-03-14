@@ -1,4 +1,4 @@
-package com.freak.bloomcart.screens
+package com.freak.bloomcart.screens.home
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size

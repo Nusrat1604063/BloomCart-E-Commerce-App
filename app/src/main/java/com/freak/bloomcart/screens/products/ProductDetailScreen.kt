@@ -26,35 +26,39 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.freak.bloomcart.model.Product
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
 import com.freak.bloomcart.screens.navigation.Screens
+import com.freak.bloomcart.viewmodels.ProductDetailsViewModel
 import org.w3c.dom.Text
 
 @Composable
 fun ProductDetalsScreen(
-    productId: String
+    productId: String,
+    productViewModel: ProductDetailsViewModel = hiltViewModel()
 ) {
      //Fetch  Product Details
 
     //first displayed
+    LaunchedEffect(productId) {
+        productViewModel.fetchProductDetails(productId)
+    }
 
 
     //collect the product details from viewmodel
-    val dummyProduct = Product(
-        id = "1",
-        name = "SmartPhone",
-        price = 999.00,
-        imageUrl = "https://photos5.appleinsider.com/gallery/product_pages/131-hero.jpg"
-    )
+   val productState = productViewModel.product.collectAsState()
+    val product = productState.value
 
-    if(dummyProduct == null) {
+    if(product  == null) {
         Text(text = "Product not found",
             style = MaterialTheme.typography.titleMedium)
     }else{
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Image(
-                painter = rememberAsyncImagePainter(model = dummyProduct.imageUrl),
+                painter = rememberAsyncImagePainter(model = product .imageUrl),
                 contentDescription = "Product Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -66,7 +70,7 @@ fun ProductDetalsScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = dummyProduct.name,
+                text = product.name,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -74,7 +78,7 @@ fun ProductDetalsScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "$${dummyProduct.price}",
+                text = "$${product.price}",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -82,7 +86,7 @@ fun ProductDetalsScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-               text = dummyProduct.categoryId?: "No Desription Found",
+               text = product.categoryId?: "No Desription Found",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )

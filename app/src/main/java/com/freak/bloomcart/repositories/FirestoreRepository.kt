@@ -46,7 +46,7 @@ class FirestoreRepository @Inject constructor(
 
     suspend fun getProductsByCategory(categoryId: String) : List<Product> {
         return try {
-            val result = firestore.collection("products")
+            val result = firestore.collection("product")
                 .whereEqualTo("categoryId", categoryId)
                 .get()
                 .await()
@@ -61,12 +61,14 @@ class FirestoreRepository @Inject constructor(
 
     suspend fun getProductsById(productId: String) : Product? {
             return try {
-                val result = firestore.collection("products")
-                    .document(productId)
+                val result = firestore.collection("product")
+                    //.document(productId)
+                    .whereEqualTo("id", productId)
                     .get()
                     .await()
 
-               result.toObject(Product::class.java)
+               //result.toObject(Product::class.java)
+                result.documents.firstOrNull()?.toObject(Product::class.java)
 
             }catch (e: Exception) {
                 null
@@ -75,7 +77,7 @@ class FirestoreRepository @Inject constructor(
 
     suspend fun getAllProductsInStore(): List<Product> {
         return try {
-            val allProducts = firestore.collection("products")
+            val allProducts = firestore.collection("product")
                 .get()
                 .await()
                 .documents

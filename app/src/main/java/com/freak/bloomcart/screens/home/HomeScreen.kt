@@ -1,5 +1,6 @@
 package com.freak.bloomcart.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -21,16 +23,19 @@ import androidx.navigation.NavController
 import com.fr.CategoryChip
 import com.freak.bloomcart.model.Category
 import com.freak.bloomcart.model.Product
-import com.freak.bloomcart.screens.BottomNavigationBar
-import com.freak.bloomcart.screens.MyTopAppBar
-import com.freak.bloomcart.screens.SearchBar
+import com.freak.bloomcart.viewmodels.CategoryViewModel
+import com.freak.bloomcart.viewmodels.ProductViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.freak.bloomcart.screens.navigation.Screens
 
 
 @Composable
 fun HomeScreen(
     navController: NavController,
     onProfileClick: ()-> Unit,
-    onCartClick: ()-> Unit
+    onCartClick: ()-> Unit,
+    productViewModel: ProductViewModel = hiltViewModel(),
+    categoryViewModel: CategoryViewModel = hiltViewModel()
     ) {
     Scaffold(
         topBar = { MyTopAppBar(onProfileClick, onCartClick) },
@@ -54,21 +59,17 @@ fun HomeScreen(
             //Search result sections
 
             //category sections
-            SectionTitle("Categories", "View All") {
+            SectionTitle("Categories", "See All") {
                 //Add navigation
-                navController.navigate("Categories")
+                navController.navigate(Screens.CategoryList.route)
             }
 
             //featured products
             Spacer(modifier = Modifier.height(16.dp))
 
 
-            val categories : List<Category> = listOf(
-                Category(1, "Electronics","https://cdn-icons-png.flaticon.com/512/5754/5754910.png"),
-                Category(2, "Clothing",
-                    "https://static.thenounproject.com/png/524455-200.png"),
-                Category(3,"Cosmetics", "https://static.thenounproject.com/png/20253-200.png")
-                )
+           val categoriesState = categoryViewModel.categories.collectAsState()
+            val categories = categoriesState.value
 
 
             val selectedCategory = remember { mutableStateOf(0) }
@@ -78,12 +79,16 @@ fun HomeScreen(
             ) {
                 items(categories.size) {
                     CategoryChip(
-                        icon = categories[it].iconURL,
+                        icon = categories[it].iconUrl,
                         text = categories[it].name,
                         isSelected = selectedCategory.value == it,
                         onClick = {
-                            selectedCategory.value = it
+                            selectedCategory.value = categories[it].id
                             /** Do the navigation logic **/
+                            navController.navigate(
+                                Screens.ProductList.createRoute(selectedCategory.value.toString())
+                            )
+
                         }
                     )
                 }
@@ -92,23 +97,22 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             SectionTitle("Featured", "See All") {
-                //Add navigation
+               navController.navigate(Screens.CategoryList.route)
             }
 
-            val productList = listOf (
-                Product("1","Smartphone", 999.99, "https://m-cdn.phonearena.com/images/hub/404-wide-two_1200/Apple-iPhone-15-release-date-price-and-features.jpg",
-                    "Electronics"),
-                Product(id = "2", "Gadgets", 350.50, "https://photos5.appleinsider.com/gallery/product_pages/131-hero.jpg")
-
-            )
+           productViewModel.getAllProductsInFireStore()
+            val allProductsState = productViewModel.allProducts.collectAsState()
+            val allproductsFound = allProductsState.value
 
             LazyRow(contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)) {
 
-                items(productList) {
+                items(allproductsFound) {
                         product ->
                     FeaturedProductCard(product) {
-                        //handle click event here
+                      navController.navigate(
+                          Screens.ProductDetails.createRoute(product.id)
+                      )
                     }
                 }
 

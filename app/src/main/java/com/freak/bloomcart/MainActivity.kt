@@ -20,7 +20,9 @@ import com.freak.bloomcart.screens.products.ProductScreen
 import com.freak.bloomcart.screens.profile.ProfileScreen
 import com.freak.bloomcart.screens.profile.SignUpScreen
 import com.freak.bloomcart.ui.theme.BloomCartTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

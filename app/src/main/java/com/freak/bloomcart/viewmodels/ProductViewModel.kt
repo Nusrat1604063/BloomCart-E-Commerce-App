@@ -36,6 +36,7 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val allProducts = repository.getAllProductsInStore()
+                println("Sucessful ${allProducts.size}")
                 _allProducts.value = allProducts
             } catch (e: Exception) {
                 Log.e("TAGY", "Error Fetching All Products")

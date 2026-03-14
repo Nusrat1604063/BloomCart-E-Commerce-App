@@ -19,19 +19,27 @@ import androidx.navigation.NavController
 import com.freak.bloomcart.model.Category
 import org.w3c.dom.Text
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.freak.bloomcart.screens.navigation.Screens
+import com.freak.bloomcart.viewmodels.CategoryViewModel
 
 @Composable
 fun CategoryScreen(
-    navController: NavController
+    navController: NavController,
+    categoryViewModel: CategoryViewModel = hiltViewModel()
 ) {
-    val categories : List<Category> = listOf(
+
+    val categoriesState = categoryViewModel.categories.collectAsState()
+    val categories = categoriesState.value
+    /*val categories : List<Category> = listOf(
         Category(1, "Electronics","https://cdn-icons-png.flaticon.com/512/5754/5754910.png"),
         Category(2, "Clothing",
             "https://static.thenounproject.com/png/524455-200.png"),
         Category(3,"Cosmetics", "https://static.thenounproject.com/png/20253-200.png")
-    )
+    )*/
+
 
     Column() {
         if(categories.isEmpty()) {

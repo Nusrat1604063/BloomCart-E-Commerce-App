@@ -2,7 +2,7 @@ package com.freak.bloomcart.screens.navigation
 
 sealed class Screens(val route: String) {
     object cart : Screens("Cart")
-    object ProductDetails: Screens("product_details/{productId") {
+    object ProductDetails: Screens("product_details/{productId}") {
         fun createRoute(productId: String) = "product_details/$productId" //navigate with arguments
     }
     object Profile: Screens("Profile")
